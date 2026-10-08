@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>作文小教室</title>
+<meta name="description" content="小五作文練習,每週一個小技巧.">
+<meta name="theme-color" content="#1f5a63">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="作文小教室">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="court">
+  <div class="court-inner">
+    <div class="eyebrow">每週一個小技巧</div>
+    <h1>作文小教室</h1>
+    <p>從找到寫什麼,到寫出讓人想讀下去的開頭.</p>
+  </div>
+  <span class="ball" aria-hidden="true"></span>
+</header>
+
+<main class="wrap" id="weeks" style="padding-top:8px"></main>
+
+<script>
+(function () {
+  /* 課程表: file 有值的週次才會開放 */
+  var STAGES = [
+    { name: "第一階段 找到寫什麼", lead: "建立自己的素材庫,不再不知道要寫什麼.", weeks: [
+      { n: 1, title: "素材寶庫", sub: "挖寶四問,找出有感覺的小事", file: "week01.html", key: "zw-week1", steps: 6 },
+      { n: 2, title: "心智圖發想", sub: "從題目往外聯想 10 個內容" },
+      { n: 3, title: "放大鏡法", sub: "把罰球前的 5 秒寫成一整段" },
+      { n: 4, title: "一材多用", sub: "同一場比賽,寫進不同題目" }
+    ]},
+    { name: "第二階段 開頭破題", lead: "學會多種開頭,依題目挑最適合的一種.", weeks: [
+      { n: 5, title: "場景開頭", sub: "用五感畫出比賽前的球場" },
+      { n: 6, title: "懸念開頭", sub: "先丟出一個謎,讓人想讀下去" },
+      { n: 7, title: "對話與聲音開頭", sub: "從一句話或一聲乒乓切入" },
+      { n: 8, title: "倒敘與以物起筆", sub: "從一支舊球拍回到過去" },
+      { n: 9, title: "開頭工具箱", sub: "同一題寫四種開頭並比較" }
+    ]},
+    { name: "第三階段 比賽級亮點", lead: "從寫得生動,進步到寫得有想法.", weeks: [
+      { n: 10, title: "立意與以小見大", sub: "從一顆球看到團隊與勇氣" },
+      { n: 11, title: "首尾呼應", sub: "結尾回到開頭的畫面" },
+      { n: 12, title: "議論入門", sub: "比賽一定要贏嗎?" },
+      { n: 13, title: "段落轉折", sub: "原本以為,沒想到" },
+      { n: 14, title: "限時實戰", sub: "50 分鐘完成一篇作文" }
+    ]}
+  ];
+  function progress(w) {
+    try {
+      var s = JSON.parse(localStorage.getItem(w.key) || "null");
+      return s && typeof s.done === "number" ? s.done : 0;
+    } catch (e) { return 0; }
+  }
+  var root = document.getElementById("weeks");
+  STAGES.forEach(function (st) {
+    var sec = document.createElement("section"); sec.className = "stage";
+    sec.innerHTML = "<h2></h2><p class='lead'></p>";
+    sec.querySelector("h2").textContent = st.name;
+    sec.querySelector("p").textContent = st.lead;
+    st.weeks.forEach(function (w) {
+      var el = document.createElement(w.file ? "a" : "div");
+      el.className = "week";
+      if (w.file) el.href = w.file;
+      var state = "即將推出";
+      if (w.file) {
+        var d = progress(w);
+        state = d >= w.steps ? "完成" : d > 0 ? d + " / " + w.steps : "開始";
+        if (d >= w.steps) el.classList.add("complete");
+      }
+      el.innerHTML = "<span class='no'>第<b></b>週</span><span class='name'><span></span><small></small></span><span class='state'></span>";
+      el.querySelector(".no b").textContent = w.n;
+      el.querySelector(".name span").textContent = w.title;
+      el.querySelector(".name small").textContent = w.sub;
+      el.querySelector(".state").textContent = state;
+      sec.appendChild(el);
+    });
+    root.appendChild(sec);
+  });
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
+})();
+</script>
+</body>
+</html>

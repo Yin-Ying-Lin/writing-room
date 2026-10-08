@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>第 1 週 素材寶庫</title>
+<meta name="theme-color" content="#1f5a63">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="court">
+  <div class="court-inner">
+    <div class="eyebrow"><a href="./">作文小教室</a> / 第 1 週</div>
+    <h1>素材寶庫</h1>
+    <p>打敗空白怪,收集屬於你的寫作寶石.</p>
+  </div>
+  <span class="ball" aria-hidden="true"></span>
+</header>
+
+<nav class="score" aria-label="比賽進度">
+  <div class="score-row" id="pips"></div>
+  <div class="board" id="board" aria-live="polite">
+    <span>你 <b id="sYou">0</b></span>
+    <span class="vs">第 <span id="sRound">1</span> 局</span>
+    <span><b id="sMon">0</b> 空白怪</span>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- 第 1 局 -->
+  <section class="step" data-step="0">
+    <div class="intro">
+      <span class="monster" aria-hidden="true"><i></i><i></i></span>
+      <div>
+        <h2>第 1 局 聲音偵探</h2>
+        <p class="lead">文章裡藏了 2 個「聽到的」和 3 個「摸到的」.選一支筆,點句子把它們找出來.</p>
+      </div>
+    </div>
+    <div class="tools" role="group" aria-label="標記筆">
+      <button class="chip c-s" data-mode="s" aria-pressed="true">聽覺筆</button>
+      <button class="chip c-t" data-mode="t" aria-pressed="false">觸覺筆</button>
+      <button class="chip c-x" data-mode="x" aria-pressed="false">橡皮擦</button>
+    </div>
+    <div class="card essay" id="essay"></div>
+    <button class="btn primary big" id="r1Check">對答案</button>
+  </section>
+
+  <!-- 第 2 局 -->
+  <section class="step" data-step="1" hidden>
+    <div class="intro">
+      <span class="monster" aria-hidden="true"><i></i><i></i></span>
+      <div>
+        <h2>第 2 局 好素材快問快答</h2>
+        <p class="lead">好素材是一個小小的,有感覺的瞬間.太大的題目寫不完,也寫不深.</p>
+      </div>
+    </div>
+    <div class="card sortcard">
+      <p class="count" id="r2Count"></p>
+      <p class="prompt" id="r2Text"></p>
+      <div class="choices" id="r2Choices">
+        <button class="btn primary big" data-ans="good">好素材</button>
+        <button class="btn big" data-ans="big">太大了</button>
+      </div>
+      <p class="feedback" id="r2Fb" hidden></p>
+      <button class="btn primary" id="r2Next" hidden>下一張</button>
+    </div>
+  </section>
+
+  <!-- 第 3 局 -->
+  <section class="step" data-step="2" hidden>
+    <div class="intro">
+      <span class="monster" aria-hidden="true"><i></i><i></i></span>
+      <div>
+        <h2>第 3 局 挖寶轉盤</h2>
+        <p class="lead">轉一下,想一想有沒有這樣的經驗.想到了就寫幾個關鍵字收進寶庫,想不到可以跳過,但空白怪會得 1 分.收滿 3 顆寶石就過關.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="gems" id="r3Gems"></div>
+      <div class="wheel" id="r3Wheel">
+        <span class="w-q" id="r3Q">按下轉盤</span>
+        <span class="w-p" id="r3P">看看會出現什麼題目</span>
+      </div>
+      <button class="btn primary big" id="r3Spin">轉轉盤</button>
+      <div id="r3Answer" hidden>
+        <label class="q" for="r3Input">寫幾個關鍵字就好</label>
+        <input type="text" id="r3Input" maxlength="20" placeholder="例:三星球被踩扁">
+        <div class="choices">
+          <button class="btn primary" id="r3Keep">收進寶庫</button>
+          <button class="btn quiet" id="r3Skip">想不到,跳過</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第 4 局 -->
+  <section class="step" data-step="3" hidden>
+    <div class="intro">
+      <span class="monster" aria-hidden="true"><i></i><i></i></span>
+      <div>
+        <h2>第 4 局 追問擂台</h2>
+        <p class="lead">這局要找爸爸或媽媽一起玩.選一顆寶石,把它的故事講出來,再用嘴巴回答 5 個追問.由爸媽按按鈕判分.</p>
+      </div>
+    </div>
+    <div class="card" id="r4Pick">
+      <h3>選一顆寶石</h3>
+      <div class="choices col" id="r4Gems"></div>
+    </div>
+    <div class="card sortcard" id="r4Play" hidden>
+      <p class="count" id="r4Count"></p>
+      <p class="gemline" id="r4Gem"></p>
+      <p class="tag" id="r4Tag"></p>
+      <p class="prompt" id="r4Text"></p>
+      <div class="choices">
+        <button class="btn primary big" id="r4Good">答得好</button>
+        <button class="btn big" id="r4Bad">想不出來</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第 5 局 -->
+  <section class="step" data-step="4" hidden>
+    <div class="intro">
+      <span class="monster" aria-hidden="true"><i></i><i></i></span>
+      <div>
+        <h2>第 5 局 一句話絕招</h2>
+        <p class="lead">用剛剛那顆寶石,寫 1 到 2 句話就好.要有一種感官,加上一種心情.</p>
+      </div>
+    </div>
+    <div class="card">
+      <p class="hint">範例:「啪」的一聲,腳底軟軟的,我低頭一看,整個人愣住了.</p>
+      <p class="gemline" id="r5Gem"></p>
+      <textarea id="r5Text" maxlength="80" placeholder="寫下那一刻"></textarea>
+      <p class="counter" id="r5Count">0 字</p>
+      <ul class="checks">
+        <li><label><input type="checkbox" id="r5c1">有寫到聽到,摸到,看到,聞到或嚐到的東西</label></li>
+        <li><label><input type="checkbox" id="r5c2">有寫到心情,而且不是只寫「很開心」「很難過」</label></li>
+        <li><label><input type="checkbox" id="r5c3">爸媽讀完,覺得眼前有畫面 (請爸媽勾)</label></li>
+      </ul>
+      <button class="btn primary big" id="r5Go">出招</button>
+    </div>
+  </section>
+
+  <!-- 結果 -->
+  <section class="step" data-step="5" hidden>
+    <div class="card result">
+      <p class="eyebrow-dark">比賽結果</p>
+      <p class="final"><span>你</span><b id="fYou">0</b><span>:</span><b id="fMon">0</b><span>空白怪</span></p>
+      <p id="fMsg"></p>
+    </div>
+    <div class="card">
+      <h3>你的寶庫</h3>
+      <div class="gems big" id="fGems"></div>
+      <p class="gemline" id="fLine"></p>
+      <p class="hint">這些寶石之後每週都會用到,下次寫作文不知道寫什麼,就先打開寶庫看看.</p>
+    </div>
+    <div class="card">
+      <h3>本週加碼任務:每天撿一顆寶石</h3>
+      <p class="hint">每天想一件小事,寫 2 到 6 個字就好.</p>
+      <div class="log" id="daily"></div>
+    </div>
+    <div class="card">
+      <div class="tools">
+        <button class="btn primary" id="copyAll">複製全部作品</button>
+        <button class="btn quiet" id="resetAsk">重新比賽</button>
+      </div>
+      <div class="confirm" id="resetConfirm" hidden>
+        寶庫和所有分數都會清空,確定嗎?
+        <button class="btn quiet" id="resetNo">取消</button>
+        <button class="btn primary" id="resetYes">確定重來</button>
+      </div>
+      <p class="hint" id="copyMsg" hidden></p>
+      <textarea id="copyFallback" hidden readonly aria-label="全部作品"></textarea>
+    </div>
+  </section>
+
+  <!-- 每局結束 -->
+  <div class="card banner" id="banner" hidden>
+    <p class="banner-title" id="bTitle"></p>
+    <p id="bMsg"></p>
+    <div class="choices">
+      <button class="btn primary big" id="bNext">下一局</button>
+      <button class="btn quiet" id="bRetry">這局再玩一次</button>
+    </div>
+  </div>
+
+  <details class="parent">
+    <summary>家長引導</summary>
+    <p>本週目標:讓孩子知道小事也能寫成好文章,並收集 3 個自己的寫作素材.全程約 30 分鐘,只需要寫幾個關鍵字和一兩句話.</p>
+    <p>第 1 局:聽覺有 2 處 (啪的一聲,球拍上彈兩下),觸覺有 3 處 (腳底軟軟的,用手指推,眼眶熱熱的).</p>
+    <p>第 2 局:重點是分辨「一整段經歷」和「一個瞬間」.好素材通常有明確的時間點和感覺.</p>
+    <p>第 3 局:孩子卡住時,先分享你自己的例子,通常就會想起來.</p>
+    <p>第 4 局是本週最重要的一局.只追問,不評論.孩子答得出具體細節 (聲音,動作,想法) 就按「答得好」,答得很籠統可以再問一次再判分.</p>
+    <p>第 5 局:第三個勾選由你來勾,讀完之後具體說出哪幾個字讓你有畫面.</p>
+  </details>
+
+  <p class="save-note">進度會自動儲存在這台裝置上</p>
+</main>
+
+<script>
+(function () {
+  var KEY = "zw-week1";
+  var ROUNDS = 5;
+  function fresh() {
+    return { step: 0, rounds: [], marks: {}, r2: { i: 0, you: 0, mon: 0 }, gems: [], r3: { you: 0, mon: 0 },
+      r4: { gem: -1, qs: [], i: 0, you: 0, mon: 0 }, r5: { text: "", c: [false, false, false] }, daily: ["", "", "", "", "", "", ""], done: 0 };
+  }
+  var S = fresh();
+  try { var raw = localStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch (e) {}
+  function save() {
+    S.done = S.rounds.filter(Boolean).length + (S.rounds.filter(Boolean).length === ROUNDS ? 1 : 0);
+    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+  }
+  function $(id) { return document.getElementById(id); }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- 計分板 ---------- */
+  var steps = document.querySelectorAll(".step");
+  var pips = $("pips");
+  ["1", "2", "3", "4", "5", "結果"].forEach(function (n, i) {
+    var b = document.createElement("button");
+    b.className = "pip"; b.innerHTML = "<b></b><span></span>";
+    b.querySelector("b").textContent = n;
+    b.addEventListener("click", function () { if (canGo(i)) go(i); });
+    pips.appendChild(b);
+  });
+  function canGo(i) { return i === 0 || !!S.rounds[i - 1] || i <= S.step; }
+  function live() {
+    var i = S.step;
+    if (i === 0) return S.rounds[0] ? [S.rounds[0].you, S.rounds[0].mon] : [0, 0];
+    if (i === 1) return [S.r2.you, S.r2.mon];
+    if (i === 2) return [S.r3.you, S.r3.mon];
+    if (i === 3) return [S.r4.you, S.r4.mon];
+    if (i === 4) return S.rounds[4] ? [S.rounds[4].you, S.rounds[4].mon] : [0, 0];
+    return null;
+  }
+  function paintBoard() {
+    pips.querySelectorAll(".pip").forEach(function (b, i) {
+      var r = S.rounds[i];
+      b.classList.toggle("on", i === S.step);
+      b.classList.toggle("done", !!r && r.win);
+      b.classList.toggle("lost", !!r && !r.win);
+      b.querySelector("span").textContent = i === 5 ? "" : r ? (r.win ? "贏" : "輸") : "";
+      b.disabled = !canGo(i);
+    });
+    var l = live();
+    $("board").hidden = !l;
+    if (l) { $("sYou").textContent = l[0]; $("sMon").textContent = l[1]; $("sRound").textContent = S.step + 1; }
+  }
+
+  /* ---------- 換局 ---------- */
+  function go(i) {
+    S.step = i;
+    steps.forEach(function (s, k) { s.hidden = k !== i; });
+    $("banner").hidden = true;
+    if (i === 1) r2Show();
+    if (i === 2) r3Paint();
+    if (i === 3) r4Show();
+    if (i === 4) r5Show();
+    if (i === 5) finalShow();
+    if (S.rounds[i] && i < 5) showBanner(i);
+    save(); paintBoard();
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  }
+  function finish(i, you, mon, msg) {
+    S.rounds[i] = { you: you, mon: mon, win: you > mon };
+    save(); paintBoard(); showBanner(i, msg);
+  }
+  function showBanner(i, msg) {
+    var r = S.rounds[i];
+    $("bTitle").textContent = (r.win ? "這局你贏了!" : "這局空白怪贏了") + " " + r.you + " : " + r.mon;
+    $("bMsg").textContent = msg || (r.win ? "做得好,繼續下一局." : "沒關係,可以再玩一次,也可以先往下一局.");
+    $("bNext").textContent = i === 4 ? "看比賽結果" : "下一局";
+    $("banner").hidden = false;
+    if (!reduce) $("banner").scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  $("bNext").addEventListener("click", function () { go(S.step + 1); });
+  $("bRetry").addEventListener("click", function () {
+    var i = S.step;
+    S.rounds[i] = null;
+    if (i === 0) { S.marks = {}; paintMarks(); clauses.forEach(function (c) { c.classList.remove("miss"); }); }
+    if (i === 1) S.r2 = { i: 0, you: 0, mon: 0, order: null };
+    if (i === 2) { S.gems = []; S.r3 = { you: 0, mon: 0 }; }
+    if (i === 3) S.r4 = { gem: S.r4.gem, qs: [], i: 0, you: 0, mon: 0 };
+    if (i === 4) { S.r5 = { text: "", c: [false, false, false] }; }
+    go(i);
+  });
+
+  /* ---------- 第 1 局 ---------- */
+  var paras = [
+    [["練球那天,",""],["教練發給我一顆全新的三星球.",""],["球面光滑得像剛剝殼的水煮蛋,",""],["上面還印著三顆小星星.",""],["我捨不得用,",""],["小心翼翼地把它收進球拍套裡.",""]],
+    [["休息時間,",""],["我跑去撿滾到角落的舊球.",""],["一不小心,",""],["「啪」的一聲,","s"],["腳底傳來一陣軟軟的觸感.","t"],["我低頭一看,",""],["整個人愣住了.",""],["那顆三星球不知道什麼時候掉了出來,",""],["已經變成一塊扁扁的小餅.",""]],
+    [["我蹲下來,",""],["想用手指把它推回原形,","t"],["可是那道凹痕怎麼推都推不出來.",""],["我的眼眶熱熱的.","t"],["教練走過來,",""],["沒有罵我,",""],["只是撿起一顆舊球,",""],["在球拍上輕輕彈了兩下,","s"],["說:「球會壞,但練出來的球技不會.」",""]],
+    [["那天回家,",""],["我把那顆扁掉的球放進抽屜.",""],["每次打開抽屜,",""],["我就會想起:",""],["真正珍貴的東西,",""],["不是捨不得用,",""],["而是用心去練.",""]]
+  ];
+  var essay = $("essay");
+  var et = document.createElement("div"); et.className = "etitle"; et.textContent = "被我踩扁的那顆球"; essay.appendChild(et);
+  var clauses = [];
+  paras.forEach(function (p, pi) {
+    var el = document.createElement("p");
+    p.forEach(function (c, ci) {
+      var s = document.createElement("span");
+      s.className = "cl"; s.textContent = c[0]; s.dataset.id = pi + "-" + ci; s.dataset.ans = c[1];
+      s.setAttribute("role", "button"); s.tabIndex = 0;
+      el.appendChild(s); clauses.push(s);
+    });
+    essay.appendChild(el);
+  });
+  var mode = "s";
+  document.querySelectorAll("[data-mode]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      mode = b.dataset.mode;
+      document.querySelectorAll("[data-mode]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+    });
+  });
+  function paintMarks() {
+    clauses.forEach(function (s) {
+      var m = S.marks[s.dataset.id];
+      s.classList.toggle("m-s", m === "s"); s.classList.toggle("m-t", m === "t");
+    });
+  }
+  function mark(s) {
+    if (S.rounds[0]) return;
+    var id = s.dataset.id;
+    if (mode === "x" || S.marks[id] === mode) delete S.marks[id]; else S.marks[id] = mode;
+    paintMarks(); save();
+  }
+  clauses.forEach(function (s) {
+    s.addEventListener("click", function () { mark(s); });
+    s.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); mark(s); } });
+  });
+  $("r1Check").addEventListener("click", function () {
+    if (S.rounds[0]) { showBanner(0); return; }
+    var hit = 0, mon = 0;
+    clauses.forEach(function (s) {
+      var m = S.marks[s.dataset.id], a = s.dataset.ans;
+      s.classList.toggle("miss", !!a && m !== a);
+      if (a && m === a) hit++; else if (a || m) mon++;
+    });
+    finish(0, hit, mon, hit === 5 && mon === 0 ? "全部找到,完美!" : "橘色虛線框是漏掉的地方,看看它們寫了什麼感覺.");
+  });
+
+  /* ---------- 第 2 局 ---------- */
+  var CARDS = [
+    ["去年暑假去日本玩", "big", "一整趟旅行有太多事,寫不完也寫不深.可以縮小成旅行中的一個瞬間."],
+    ["在日本第一次吃章魚燒,燙到舌頭", "good", "有時間點,有感覺 (燙),很有畫面."],
+    ["我的足球隊", "big", "一整個球隊範圍太大.可以改成隊上某一次讓你難忘的傳球."],
+    ["比賽最後一球擦網,我愣在原地", "good", "一個瞬間,有聲音也有動作,好素材."],
+    ["我的學校生活", "big", "太大了.可以改成某一節課發生的一件小事."],
+    ["發球時手一直發抖,球掉在地上", "good", "有身體的感覺,也看得出心情,好素材."],
+    ["我很喜歡運動", "big", "這是一個想法,不是一件事.要找出讓你喜歡上運動的那一刻."],
+    ["輸球後,隊友默默遞給我一瓶水", "good", "小動作裡藏著友情,很適合寫成文章."]
+  ];
+  function r2Show() {
+    if (!S.r2.order) S.r2.order = shuffle(CARDS.map(function (_, i) { return i; }));
+    var i = S.r2.i;
+    if (i >= CARDS.length) { $("r2Choices").hidden = true; $("r2Next").hidden = true; return; }
+    var c = CARDS[S.r2.order[i]];
+    $("r2Count").textContent = "第 " + (i + 1) + " / " + CARDS.length + " 張";
+    $("r2Text").textContent = c[0];
+    $("r2Choices").hidden = false; $("r2Fb").hidden = true; $("r2Next").hidden = true;
+  }
+  document.querySelectorAll("#r2Choices button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var c = CARDS[S.r2.order[S.r2.i]];
+      var ok = b.dataset.ans === c[1];
+      if (ok) S.r2.you++; else S.r2.mon++;
+      $("r2Fb").textContent = (ok ? "答對了!" : "空白怪得分.") + c[2];
+      $("r2Fb").className = "feedback " + (ok ? "" : "warn");
+      $("r2Fb").hidden = false; $("r2Choices").hidden = true;
+      S.r2.i++;
+      save(); paintBoard();
+      if (S.r2.i >= CARDS.length) finish(1, S.r2.you, S.r2.mon);
+      else $("r2Next").hidden = false;
+    });
+  });
+  $("r2Next").addEventListener("click", r2Show);
+
+  /* ---------- 第 3 局 ---------- */
+  var QS = ["第一次", "最緊張的時候", "最開心的時候", "最生氣的時候", "原本以為,結果沒想到", "後悔的一件事", "想法改變的一次"];
+  var PLACES = ["在桌球桌旁", "在足球場上", "在教室裡", "在家裡", "出去玩的時候", "和朋友在一起時"];
+  var cur = null;
+  function r3Paint() {
+    var g = $("r3Gems"); g.innerHTML = "";
+    for (var i = 0; i < 3; i++) {
+      var d = document.createElement("span");
+      d.className = "gem" + (S.gems[i] ? " fill" : "");
+      d.textContent = S.gems[i] ? S.gems[i].text : "?";
+      g.appendChild(d);
+    }
+    var full = S.gems.length >= 3;
+    $("r3Spin").hidden = full; if (full) $("r3Answer").hidden = true;
+  }
+  $("r3Spin").addEventListener("click", function () {
+    var btn = this; btn.disabled = true; $("r3Answer").hidden = true;
+    var n = reduce ? 1 : 12, k = 0;
+    (function tick() {
+      cur = { q: QS[Math.floor(Math.random() * QS.length)], p: PLACES[Math.floor(Math.random() * PLACES.length)] };
+      $("r3Q").textContent = cur.q; $("r3P").textContent = cur.p;
+      if (++k < n) setTimeout(tick, 60 + k * 12);
+      else { btn.disabled = false; btn.textContent = "再轉一次"; $("r3Answer").hidden = false; $("r3Input").value = ""; $("r3Input").focus(); }
+    })();
+  });
+  $("r3Keep").addEventListener("click", function () {
+    var v = $("r3Input").value.trim();
+    if (!v) { $("r3Input").placeholder = "先寫幾個字再收進寶庫"; $("r3Input").focus(); return; }
+    S.gems.push({ q: cur.q, p: cur.p, text: v }); S.r3.you++;
+    $("r3Answer").hidden = true; $("r3Spin").textContent = "轉轉盤";
+    save(); paintBoard(); r3Paint();
+    if (S.gems.length >= 3) finish(2, S.r3.you, S.r3.mon, "3 顆寶石到手!");
+  });
+  $("r3Skip").addEventListener("click", function () {
+    S.r3.mon++; $("r3Answer").hidden = true; $("r3Spin").textContent = "轉轉盤";
+    save(); paintBoard();
+  });
+
+  /* ---------- 第 4 局 ---------- */
+  var ASK = [
+    ["心情", "那一刻,你心裡第一個想法是什麼?"],
+    ["心情", "你的心跳是變快還是變慢?手有沒有出汗?"],
+    ["感官", "那時候旁邊有什麼聲音?"],
+    ["感官", "你的手或身體有什麼感覺?"],
+    ["感官", "你看到最清楚的一個畫面是什麼?"],
+    ["想法", "現在回頭看,你有什麼不一樣的想法?"],
+    ["想法", "如果再遇到一次,你會怎麼做?"]
+  ];
+  function r4Show() {
+    var pick = $("r4Gems"); pick.innerHTML = "";
+    S.gems.forEach(function (g, i) {
+      var b = document.createElement("button");
+      b.className = "btn"; b.textContent = g.text;
+      b.addEventListener("click", function () {
+        S.r4 = { gem: i, qs: shuffle(ASK.map(function (_, k) { return k; })).slice(0, 5), i: 0, you: 0, mon: 0 };
+        save(); r4Show();
+      });
+      pick.appendChild(b);
+    });
+    if (!S.gems.length) pick.innerHTML = "<p class='hint'>先完成第 3 局,收集寶石.</p>";
+    var playing = !!S.gems[S.r4.gem] && S.r4.qs.length && S.r4.i < 5 && !S.rounds[3];
+    $("r4Pick").hidden = playing || !!S.rounds[3];
+    $("r4Play").hidden = !playing;
+    if (playing) {
+      var q = ASK[S.r4.qs[S.r4.i]];
+      $("r4Count").textContent = "第 " + (S.r4.i + 1) + " / 5 個追問";
+      $("r4Gem").textContent = "寶石:" + S.gems[S.r4.gem].text;
+      $("r4Tag").textContent = q[0];
+      $("r4Text").textContent = q[1];
+    }
+    paintBoard();
+  }
+  function r4Judge(good) {
+    if (good) S.r4.you++; else S.r4.mon++;
+    S.r4.i++; save();
+    if (S.r4.i >= 5) { $("r4Play").hidden = true; finish(3, S.r4.you, S.r4.mon, "說得出細節,就代表寫得出來."); }
+    else r4Show();
+  }
+  $("r4Good").addEventListener("click", function () { r4Judge(true); });
+  $("r4Bad").addEventListener("click", function () { r4Judge(false); });
+
+  /* ---------- 第 5 局 ---------- */
+  var r5Text = $("r5Text"), r5c = [$("r5c1"), $("r5c2"), $("r5c3")];
+  function r5Show() {
+    var g = S.gems[S.r4.gem >= 0 ? S.r4.gem : 0];
+    $("r5Gem").textContent = g ? "寶石:" + g.text : "";
+    r5Text.value = S.r5.text; r5c.forEach(function (c, i) { c.checked = !!S.r5.c[i]; });
+    r5Count();
+  }
+  function r5Count() { $("r5Count").textContent = r5Text.value.replace(/\s/g, "").length + " 字"; }
+  r5Text.addEventListener("input", function () { S.r5.text = r5Text.value; save(); r5Count(); });
+  r5c.forEach(function (c, i) { c.addEventListener("change", function () { S.r5.c[i] = c.checked; save(); }); });
+  $("r5Go").addEventListener("click", function () {
+    if (r5Text.value.replace(/\s/g, "").length < 8) { r5Text.placeholder = "至少寫一句話再出招"; r5Text.focus(); return; }
+    var you = S.r5.c.filter(Boolean).length;
+    finish(4, you, 3 - you, you === 3 ? "三個條件全中,超級絕招!" : you === 2 ? "很不錯!" : "可以看看範例,再修改一次.");
+  });
+
+  /* ---------- 結果 ---------- */
+  var daily = $("daily");
+  ["一", "二", "三", "四", "五", "六", "日"].forEach(function (d, i) {
+    var sp = document.createElement("span"); sp.textContent = d;
+    var inp = document.createElement("input"); inp.type = "text"; inp.id = "day" + i; inp.maxLength = 20;
+    inp.setAttribute("aria-label", "星期" + d);
+    inp.addEventListener("input", function () { S.daily[i] = inp.value; save(); });
+    daily.appendChild(sp); daily.appendChild(inp);
+  });
+  function finalShow() {
+    var w = 0, l = 0;
+    S.rounds.forEach(function (r) { if (r) { if (r.win) w++; else l++; } });
+    $("fYou").textContent = w; $("fMon").textContent = l;
+    $("fMsg").textContent = w > l ? "你打敗了空白怪!從今天起,你的寶庫裡已經有東西可以寫了." : "空白怪這次贏了,不過你的寶庫已經有寶石了.可以挑一局再玩一次.";
+    var g = $("fGems"); g.innerHTML = "";
+    S.gems.forEach(function (x) { var s = document.createElement("span"); s.className = "gem fill"; s.textContent = x.text; g.appendChild(s); });
+    $("fLine").textContent = S.r5.text ? "你的絕招:" + S.r5.text : "";
+    S.daily.forEach(function (v, i) { $("day" + i).value = v || ""; });
+  }
+  function exportText() {
+    var L = ["作文小教室 第 1 週 素材寶庫", ""];
+    L.push("[寶庫]");
+    S.gems.forEach(function (g, i) { L.push((i + 1) + ". " + g.text + " (" + g.q + "," + g.p + ")"); });
+    L.push("", "[一句話絕招]", S.r5.text || "(未填)", "", "[每天撿一顆寶石]");
+    ["一", "二", "三", "四", "五", "六", "日"].forEach(function (d, i) { L.push(d + ":" + (S.daily[i] || "")); });
+    L.push("", "[比分]");
+    S.rounds.forEach(function (r, i) { if (r) L.push("第 " + (i + 1) + " 局 " + r.you + " : " + r.mon + (r.win ? " 贏" : " 輸")); });
+    return L.join("\n");
+  }
+  $("copyAll").addEventListener("click", function () {
+    var text = exportText(), msg = $("copyMsg"), fb = $("copyFallback");
+    function fallback() {
+      fb.value = text; fb.hidden = false; fb.style.minHeight = "200px"; fb.focus(); fb.select();
+      msg.textContent = "無法自動複製,內容已選取在下方,請長按複製."; msg.hidden = false;
+    }
+    try { navigator.clipboard.writeText(text).then(function () { msg.textContent = "已複製,可以貼到記事本或訊息裡."; msg.hidden = false; }, fallback); }
+    catch (e) { fallback(); }
+  });
+  $("resetAsk").addEventListener("click", function () { $("resetConfirm").hidden = false; });
+  $("resetNo").addEventListener("click", function () { $("resetConfirm").hidden = true; });
+  $("resetYes").addEventListener("click", function () {
+    S = fresh(); save(); $("resetConfirm").hidden = true;
+    clauses.forEach(function (c) { c.classList.remove("miss"); });
+    paintMarks(); r3Paint(); go(0);
+  });
+
+  paintMarks(); r3Paint(); go(S.step || 0);
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
+})();
+</script>
+</body>
+</html>
